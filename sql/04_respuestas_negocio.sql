@@ -35,9 +35,9 @@ WITH VentasMensuales AS (
         YEAR(ord.order_date) AS ano, MONTH(ord.order_date) AS mes, cus.nombre, cus.apellido,
         COUNT(DISTINCT ord.order_id) AS cantidad_de_ventas_realizadas,
         SUM(cantidad) AS cantidad_de_productos_vendidos,
-        SUM(cantidad * preco_unitario) AS monto_total_transaccionado,
+        SUM(cantidad * precio_unitario) AS monto_total_transaccionado,
         ROW_NUMBER() OVER (PARTITION BY YEAR(ord.order_date), MONTH(ord.order_date)
-                           ORDER BY SUM(cantidad * preco_unitario) DESC) AS top_5_usuarios
+                           ORDER BY SUM(cantidad * precio_unitario) DESC) AS top_5_usuarios
     FROM tbOrder ord
     INNER JOIN tbOrderItem ord_ite
     ON ord.order_id = ord_ite.order_id
@@ -65,11 +65,11 @@ reprocesable. Vale resaltar que en la tabla Item, vamos a tener únicamente el �
 definida. (Se puede resolver a través de StoredProcedure)
 */
 
-CREATE TABLE ItemSnapshot (
+CREATE TABLE tbItemSnapshot (
     snapshot_date DATE NOT NULL,
     item_id INT NOT NULL,
-    preco DECIMAL(10,2) NOT NULL,
-    fecha_de_baja VARCHAR(50) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    fecha_de_baja VARCHAR(50) NULL,
     PRIMARY KEY (snapshot_date, item_id)
 );
 
@@ -77,12 +77,12 @@ CREATE PROCEDURE UpdateItemSnapshot
 AS
 BEGIN
     -- Usando MERGE para inserir ou atualizar dados
-    MERGE INTO ItemSnapshot AS target
-    USING (SELECT item_id, preco, fecha_de_baja FROM tbItem) AS source
+    MERGE INTO tbItemSnapshot AS target
+    USING (SELECT item_id, precio, fecha_de_baja FROM tbItem) AS source
     ON target.item_id = source.item_id AND target.snapshot_date = CAST(GETDATE() AS DATE)
     WHEN MATCHED THEN
-        UPDATE SET target.preco = source.preco, target.fecha_de_baja = source.fecha_de_baja
+        UPDATE SET target.precio = source.precio, target.fecha_de_baja = source.fecha_de_baja
     WHEN NOT MATCHED BY TARGET THEN
-        INSERT (snapshot_date, item_id, preco, fecha_de_baja)
-        VALUES (CAST(GETDATE() AS DATE), source.item_id, source.preco, source.fecha_de_baja);
+        INSERT (snapshot_date, item_id, precio, fecha_de_baja)
+        VALUES (CAST(GETDATE() AS DATE), source.item_id, source.precio, source.fecha_de_baja);
 END;

@@ -16,13 +16,13 @@ VALUES
 (3, 'Livros', '/livros');
 
 -- Inserindo Itens (Vinculados a categorias e vendedores)
-INSERT INTO tbItem (item_id, category_id, fecha_de_baja, seller_id)
+INSERT INTO tbItem (item_id, category_id, precio, fecha_de_baja, seller_id)
 VALUES
-(1, 1, NULL, 1),
-(2, 1, NULL, 2),
-(3, 2, NULL, 3),
-(4, 2, NULL, 4),
-(5, 3, NULL, 1);
+(1, 1, 10.51, NULL, 1),
+(2, 1, 154.25, NULL, 2),
+(3, 2, 1.13, NULL, 3),
+(4, 2, 1200.00, NULL, 4),
+(5, 3, 13.89, NULL, 1);
 
 -- Inserindo Orders (Compradores fazendo pedidos)
 INSERT INTO tbOrder (order_id, order_date, buyer_id)
@@ -32,7 +32,7 @@ VALUES
 (3, '2024-02-03 14:45:00', 1);
 
 -- Inserindo Itens nos Pedidos
-INSERT INTO tbOrderItem (order_id, item_id, quantidade, preco_unitario)
+INSERT INTO tbOrderItem (order_id, item_id, cantidad, precio_unitario)
 VALUES
 (1, 1, 2, 1500.00),
 (1, 3, 1, 80.00),

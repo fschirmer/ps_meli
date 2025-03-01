@@ -26,7 +26,7 @@ CREATE TABLE tbCategory(
 CREATE TABLE tbItem(
     item_id INT PRIMARY KEY,
     category_id INT,
-    preco DECIMAL(10,2) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     fecha_de_baja DATE,
     seller_id INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES tbCategory(category_id),
@@ -43,8 +43,8 @@ CREATE TABLE tbOrder(
 CREATE TABLE tbOrderItem(
     order_id INT NOT NULL,
     item_id INT NOT NULL,
-    quantidade INT NOT NULL,
-    preco_unitario DECIMAL(10,2) NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (order_id, item_id),
     FOREIGN KEY (order_id) REFERENCES tbOrder(order_id),
     FOREIGN KEY (item_id) REFERENCES tbItem(item_id)
