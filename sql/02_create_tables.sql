@@ -1,4 +1,4 @@
-USE meli
+USE meli;
 
 DROP TABLE IF EXISTS tbOrderItem;
 DROP TABLE IF EXISTS tbOrder;

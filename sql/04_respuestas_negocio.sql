@@ -6,7 +6,7 @@ USE meli;
 */
 
 SELECT
-    cus.customer_id, cus.nombre, cus.email, COUNT(*) AS total_ventas
+    cus.customer_id, cus.nombre, cus.email, COUNT(DISTINCT ord.order_id) AS total_ventas
 FROM tbOrder ord
 INNER JOIN tbOrderItem ord_ite
 ON ord.order_id = ord_ite.order_id
@@ -86,3 +86,11 @@ BEGIN
         INSERT (snapshot_date, item_id, precio, fecha_de_baja)
         VALUES (CAST(GETDATE() AS DATE), source.item_id, source.precio, source.fecha_de_baja);
 END;
+
+SELECT * FROM tbItemSnapshot;
+
+SELECT * FROM tbItem;
+
+EXEC UpdateItemSnapshot;
+
+SELECT * FROM tbItemSnapshot;
